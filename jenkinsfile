@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    /*tools {
+        maven 'maven-3.8.6' 
+    }*/
+    environment{
+        PATH = '/usr/bin/:/bin'
+        //PATH = '/usr/share/maven:/bin'
+        //PATH = '/usr/bin:$PATH'
+    }
+    stages {
+        stage('pull') {
+            steps {
+                git 'https://github.com/TrivediHeena/DemoCRUDSpringBoot.git'
+            }
+        }
+        stage('build'){
+            steps{
+                //git 'https://github.com/TrivediHeena/DemoCRUDSpringBoot.git'
+                withEnv(["PATH+EXTRA=$PATH"]) {
+                    sh 'mvn -B -D skipTests clean install'
+                }
+            }
+        }
+        stage('test'){
+            steps{
+                echo 'testing...'
+            }
+        }
+        stage('deploy'){
+            steps{
+                echo 'deploying...'
+            }
+        }
+    }
+}
